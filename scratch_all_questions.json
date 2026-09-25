@@ -1,0 +1,182 @@
+[
+  {
+    "id": "q-boundary-1",
+    "prompt": "What is the operational scope and boundary of ExLearn",
+    "options": [
+      "An independent educational simulator that does not issue certification or conformity approvals",
+      "An accredited Ex Certification Body (ExCB) authorized to evaluate equipment",
+      "A Recognized Training Provider (RTP) formally registered with IECEx",
+      "A statutory body empowered to award Certificates of Personnel Competence (CoPC)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ExLearn is an independent educational simulator for personal learning. It is not an ExCB or RTP and has no statutory authority to certify persons or equipment.', relatedLessonId: 'ex-orientation"
+  },
+  {
+    "id": "q-boundary-2",
+    "prompt": "What status is conferred upon a user who completes modules and checks in ExLearn",
+    "options": [
+      "Formal statutory qualification as an Ex-competent person under IECEx 05",
+      "Official certificate of conformity for installed electrical equipment",
+      "Educational practice and self-assessment records for learning purposes only",
+      "Legal sign-off granting compliance approval under workplace safety legislation"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Completing ExLearn activities provides educational practice records only. It does not grant legal approvals, equipment conformity, or professional qualifications.', relatedLessonId: 'copc-rtp-excb"
+  },
+  {
+    "id": "q-atmosphere-1",
+    "prompt": "Under IEC 60079-10-1 and IEC 60079-10-2, which factors are primary inputs for hazardous area classification",
+    "options": [
+      "Only the nominal operating voltage and power factor of nearby machinery",
+      "The structural steel building foundations and mechanical pipe support spacing",
+      "Flammable substance properties, sources and grades of release, and ventilation effectiveness",
+      "The acoustic noise emissions and thermal dissipation of nearby mechanical rotating equipment"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Hazardous area classification depends on substance characteristics (such as flash point, LEL, and auto-ignition temperature), grades of release, and ventilation degree and availability.', relatedLessonId: 'hazardous-areas"
+  },
+  {
+    "id": "q-atmosphere-2",
+    "prompt": "Why are combustible dust layers considered a primary explosion risk in hazardous areas",
+    "options": [
+      "They continuously raise the minimum ignition energy required for dust clouds",
+      "They eliminate smouldering risks by forming an oxygen-tight crust over surfaces",
+      "They prevent electrical tracking across high-voltage terminal insulators",
+      "They thermally insulate hot surfaces and can be disturbed into explosive dust clouds"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Dust layers act as thermal insulation, causing surface temperatures to rise and potentially smoulder, and can be disturbed by shock or draughts into an explosive dust cloud.', relatedLessonId: 'gas-vapour-mist-dust"
+  },
+  {
+    "id": "q-epl-1",
+    "prompt": "What does an Equipment Protection Level (EPL) indicate under IEC 60079-0",
+    "options": [
+      "The level of protection assigned to equipment based on its likelihood of becoming an ignition source in explosive gas or dust atmospheres",
+      "A complete site installation authorization that bypasses hazardous area zone matching",
+      "A certified log proving that equipment has undergone all required periodic inspections",
+      "A credential certifying the technical competence of the installation technician"
+    ],
+    "correctAnswer": 0,
+    "explanation": "An Equipment Protection Level (EPL, such as Ga/Gb/Gc or Da/Db/Dc) defines the risk of the equipment becoming an ignition source under normal operation, expected malfunction, or rare malfunction.', relatedLessonId: 'zones-and-epl"
+  },
+  {
+    "id": "q-epl-2",
+    "prompt": "What is the correct procedure when an equipment marking (e.g. EPL Gc) conflicts with the hazardous area classification schedule (e.g. Zone 1 requiring Gb)",
+    "options": [
+      "Energize the equipment if external housing seals appear clean and undamaged",
+      "Hold acceptance, control the condition, and obtain documented engineering verification",
+      "Remove the nameplate marking and commission under general industrial procedures",
+      "Assume the equipment certificate automatically invalidates the area classification drawing"
+    ],
+    "correctAnswer": 1,
+    "explanation": "An EPL mismatch indicates a potential ignition protection deficit; acceptance must be held and escalated for competent engineering review before energization.', relatedLessonId: 'equipment-selection-marking"
+  },
+  {
+    "id": "q-protection-1",
+    "prompt": "Which condition can compromise the explosion protection capability of an Ex d flameproof enclosure",
+    "options": [
+      "Conducting an initial inspection in accordance with IEC 60079-17",
+      "Applying approved non-setting, non-metallic grease to machined joint surfaces",
+      "Exceeding maximum permitted flamepath gaps, using wrong fastener grades, or unapproved drilling",
+      "Fitting certified stopping plugs of matching thread form and property class"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Flameproof integrity depends on strict flamepath dimensions, fastener tensile strength to withstand explosion pressure, and certified entry integrity.', relatedLessonId: 'ex-d-ex-e"
+  },
+  {
+    "id": "q-protection-2",
+    "prompt": "What is fundamental when assessing an intrinsically safe (Ex i) installation under IEC 60079-14 and IEC 60079-25",
+    "options": [
+      "Verifying that the external enclosure provides an ingress protection rating of at least IP66",
+      "Ensuring internal overpressure is monitored with a certified differential pressure sensor",
+      "Measuring flamepath joint clearances with calibrated non-metallic feeler gauges",
+      "Matching complete circuit entity parameters (Ui, Ii, Pi, Ci, Li) and cable characteristics"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Intrinsic safety is a system concept requiring verification that the energy-limiting apparatus, interconnecting cable, and field device satisfy combined electrical parameters.', relatedLessonId: 'ex-i-ex-t-ex-p"
+  },
+  {
+    "id": "q-installation-1",
+    "prompt": "Does a compliant equipment Ex certificate and nameplate marking alone confirm that an installation is safe to energize",
+    "options": [
+      "No, complete installed conditions including cable glands, earthing, environmental limits, and IEC 60079-14 compliance must be verified",
+      "Yes, a certified nameplate guarantees complete installation integrity regardless of workmanship",
+      "Only if the certified apparatus was manufactured within the preceding twelve calendar months",
+      "Only when installed in Zone 2 or Zone 22 areas where explosive atmospheres are unlikely"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Certification proves that the apparatus meets manufacturing standards, but safe operation requires verifying complete installed conditions, cable glands, earthing, and IEC 60079-14 compliance.', relatedLessonId: 'equipment-selection-marking"
+  },
+  {
+    "id": "q-installation-2",
+    "prompt": "What is the required response when an undocumented physical modification is discovered on certified Ex equipment during an installation check",
+    "options": [
+      "Accept the modification if the equipment has passed an insulation resistance test",
+      "Record the non-conformity, control the equipment status, and route through formal change evaluation",
+      "Conceal the altered component and commission the circuit if production is scheduled",
+      "Modify the equipment marking tag on site to match the as-found physical arrangement"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Uncontrolled modifications can invalidate certification and protection. The discrepancy must be documented and reviewed under formal management of change.', relatedLessonId: 'installation-fundamentals"
+  },
+  {
+    "id": "q-lifecycle-1",
+    "prompt": "Under IEC 60079-17, what elements are necessary for an Ex inspection finding to be technically defensible and actionable",
+    "options": [
+      "A generalized note stating that the overall equipment condition appears satisfactory",
+      "An unannotated photograph filed without equipment tag numbers or location details",
+      "Clear asset identification, location, specific observation referenced to standards, assigned priority, and designated action owner",
+      "An informal verbal notification given to operating personnel during shift change"
+    ],
+    "correctAnswer": 2,
+    "explanation": "An effective inspection finding links traceable asset identification with precise physical observations, standard non-conformity references, and responsible ownership.', relatedLessonId: 'ex008-inspection"
+  },
+  {
+    "id": "q-lifecycle-2",
+    "prompt": "What must occur before Ex equipment is returned to service following an overhaul or repair where documentation is incomplete",
+    "options": [
+      "Immediate energization if the apparatus operates normally under no-load testing",
+      "Assumption that certified protection integrity is preserved if original bolts are fitted",
+      "Discarding the repair paperwork to avoid conflicting historical maintenance records",
+      "Maintaining the asset in a safe isolated state until verified by competent personnel in accordance with IEC 60079-19"
+    ],
+    "correctAnswer": 3,
+    "explanation": "IEC 60079-19 governs repair and overhaul. If evidence is uncertain, equipment must not be returned to hazardous service without competent technical review.', relatedLessonId: 'maintenance-repair-overhaul"
+  },
+  {
+    "id": "q-competence-1",
+    "prompt": "Which statement accurately describes certification boundaries under the IECEx System",
+    "options": [
+      "ExLearn is an independent educational tool; it is not an ExCB or RTP and cannot issue a Certificate of Personnel Competence (CoPC)",
+      "Recognized Training Providers (RTPs) and Ex Certification Bodies (ExCBs) perform identical conformity assessment roles",
+      "Completing interactive training quizzes automatically qualifies an engineer for an IECEx Certificate of Personnel Competence",
+      "A passing score on a simulator quiz serves as formal certification to authorize hazardous area electrical installations"
+    ],
+    "correctAnswer": 0,
+    "explanation": "ExLearn is an educational learning simulator only. Formal certification requires an accredited ExCB following the IECEx 05 scheme rules.', relatedLessonId: 'copc-rtp-excb"
+  },
+  {
+    "id": "q-competence-2",
+    "prompt": "What is the defensible technical response when inspection evidence or certificate data for an Ex asset is incomplete",
+    "options": [
+      "Proceed with sign-off based on assumptions from adjacent equipment of similar appearance",
+      "Record the specific evidence gap, maintain safe control, and escalate for technical verification",
+      "Select the least restrictive compliance interpretation to avoid maintenance delays",
+      "Assume default Zone 2 conformity without checking the equipment nameplate or certificate schedule"
+    ],
+    "correctAnswer": 1,
+    "explanation": "In hazardous areas, incomplete evidence constitutes an uncontrolled risk. The gap must be recorded, controlled, and formally resolved.', relatedLessonId: 'competence-and-responsibilities"
+  },
+  {
+    "id": "q-integrated-1",
+    "prompt": "During an integrated hazardous area review, how must a conflict between the area classification drawing and installed equipment protection level be handled",
+    "options": [
+      "Disregard the discrepancy if the equipment has been functioning without incident",
+      "Default unconditionally to the oldest archive drawing without field verification",
+      "Document the conflict, maintain safe control of the plant, and obtain formal engineering verification",
+      "Authorize the most capital-intensive equipment replacement without investigating the release basis"
+    ],
+    "correctAnswer": 2,
+    "explanation": "An integrated review must make evidence conflicts visible, ensure immediate safety control, and engage responsible engineering disciplines to resolve the basis of safety.', relatedLessonId: 'integrated-ex-workshop"
+  }
+]
