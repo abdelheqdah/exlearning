@@ -48,7 +48,7 @@ function isNavActive(page: string, targetPath: string): boolean {
 
 function App() {
   const [route, setRoute] = useState<Route>(() => resolveRoute(getInitialPath()))
-  const { progress, startLesson, completeLesson, saveQuizScore, recordScenario, clearProgress } = useProgress()
+  const { progress, startLesson, completeLesson, saveQuizScore, recordScenario, clearProgress, loadImportedProgress } = useProgress()
   useEffect(() => {
     const onPop = () => setRoute(resolveRoute(window.location.pathname))
     window.addEventListener('popstate', onPop)
@@ -74,7 +74,7 @@ function App() {
       {route.page === 'quiz' && <QuizDetail key={route.id} id={route.id} go={go} saveQuizScore={saveQuizScore} progress={progress} />}
       {route.page === 'scenarios' && <Scenarios go={go} completed={progress.completedScenarios} />}
       {route.page === 'scenario' && <ScenarioDetail key={route.id} id={route.id} go={go} completed={progress.completedScenarios} recordScenario={recordScenario} progress={progress} />}
-      {route.page === 'progress' && <Progress go={go} progress={progress} clearProgress={clearProgress} />}
+      {route.page === 'progress' && <Progress go={go} progress={progress} clearProgress={clearProgress} loadImportedProgress={loadImportedProgress} />}
       {route.page === 'about' && <About go={go} />}
       {route.page === 'disclaimer' && <DisclaimerPage />}
       {route.page === 'not-found' && <NotFound go={go} />}
@@ -140,14 +140,41 @@ function ScenarioDetail({ id, go, completed, recordScenario, progress }: { id?: 
   return <div className="container narrow"><button className="back-button" onClick={() => go('/scenarios')}>← All scenarios</button><PageHeader eyebrow={`${scenario.level} / DECISION EXERCISE`} title={scenario.title} intro="Read the conditions, pause, and choose the action you would defend." /><div className="assessment-instructions" role="note"><strong>Decision guidance</strong><p>When evidence is incomplete or safety-critical, stop, verify the facts, and escalate through the responsible site process.</p><p aria-live="polite">{answered ? 'Decision reviewed' : 'Awaiting your decision'}</p></div><div className="scenario-context"><p className="eyebrow">SITUATION</p><p>{scenario.context}</p></div><div className="options scenario-options">{scenario.decisionOptions.map((option, index) => <button className={answered ? index === scenario.correctChoice ? 'scenario-option correct' : choice === index ? 'scenario-option incorrect' : 'scenario-option' : 'scenario-option'} onClick={() => { setChoice(index); recordScenario(scenario.id, index === scenario.correctChoice) }} key={option} disabled={answered}><span>{String.fromCharCode(65 + index)}</span>{option}{answered && index === scenario.correctChoice && <span className="option-status correct-tag" aria-label="Recommended decision"> ✓ Recommended</span>}{answered && choice === index && index !== scenario.correctChoice && <span className="option-status incorrect-tag" aria-label="Your choice"> ✗ Selected</span>}</button>)}</div>{answered && <div className="explanation-box" role="status" aria-live="polite"><p className="eyebrow">{choice === scenario.correctChoice ? 'GOOD DECISION' : 'REVIEW THE DECISION'}</p><p>{scenario.explanation}</p><p><strong>Consequence:</strong> {scenario.consequence}</p><p><strong>Recommended action:</strong> {scenario.recommendedAction}</p><p>Attempts: {progress.scenarioAttempts[scenario.id] ?? 0}.</p><button className="button button-ghost" onClick={() => setChoice(undefined)}>Retry scenario</button></div>}<p className="completion-note">{completed.includes(scenario.id) ? 'Successfully completed and saved locally.' : 'Your answer attempt is saved locally.'}</p></div>
 }
 
-function Progress({ go, progress, clearProgress }: { go: (path: string) => void; progress: ReturnType<typeof useProgress>['progress']; clearProgress: () => void }) {
+function Progress({ go, progress, clearProgress, loadImportedProgress }: { go: (path: string) => void; progress: ReturnType<typeof useProgress>['progress']; clearProgress: () => void; loadImportedProgress: (json: string) => boolean }) {
   const [resetMessage, setResetMessage] = useState('')
   const curriculum = calculateCurriculumProgress(progress, lessons)
   const total = lessons.length + quizzes.length + scenarios.length
   const done = progress.completedLessons.length + progress.completedQuizzes.length + progress.completedScenarios.length
   const recommendation = getRecommendedPath(progress, lessons.map((lesson) => lesson.id), quizzes.map((quiz) => quiz.id), scenarios.map((scenario) => scenario.id))
   const recTargetId = recommendation.split('/')[2]
-  return <div className="container"><PageHeader eyebrow="YOUR DASHBOARD" title="Progress that stays yours." intro="A lightweight local dashboard for this browser. No login, account, or server storage." /><div className="progress-overview"><div><strong>{Math.round((done / total) * 100)}%</strong><span>overall activity complete</span></div><div><strong>{curriculum.completedLessons}</strong><span>lessons complete</span></div><div><strong>{curriculum.inProgressLessons}</strong><span>lessons in progress</span></div><div><strong>{curriculum.notStartedLessons}</strong><span>lessons not started</span></div></div><div className="progress-bar" role="progressbar" aria-valuenow={curriculum.completionPercent} aria-valuemin={0} aria-valuemax={100} aria-label="Curriculum lesson progress"><i style={{ width: `${curriculum.completionPercent}%` }} /></div><div className="level-progress">{(['Beginner', 'Intermediate', 'Advanced'] as Level[]).map((level) => <div key={level}><div className="card-top"><strong>{level}</strong><span>{curriculum.byLevel[level].percent}%</span></div><div className="progress-bar"><i style={{ width: `${curriculum.byLevel[level].percent}%` }} /></div><small>{curriculum.byLevel[level].completed} completed · {curriculum.byLevel[level].inProgress} in progress · {curriculum.byLevel[level].notStarted} not started</small></div>)}</div><section className="module-summary"><p className="eyebrow">MODULE PROGRESS</p>{Object.entries(curriculum.byModule).map(([module, summary]) => <div className="module-summary-row" key={module}><span>Module {module}</span><span>{summary.completed}/{summary.total} complete</span><div className="progress-bar"><i style={{ width: `${summary.percent}%` }} /></div></div>)}</section><section className="performance-grid"><div><p className="eyebrow">QUIZ PERFORMANCE</p><strong>{progress.attemptedQuizzes.length}</strong><span>attempted · {progress.completedQuizzes.length} passed</span></div><div><p className="eyebrow">SCENARIO PERFORMANCE</p><strong>{progress.attemptedScenarios.length}</strong><span>attempted · {progress.completedScenarios.length} completed</span></div></section><section className="next-step"><p className="eyebrow">CONTINUE LEARNING</p><h2>{recommendation.startsWith('/lesson/') ? lessons.find((lesson) => lesson.id === recTargetId)?.title : recommendation.startsWith('/quiz/') ? quizzes.find((quiz) => quiz.id === recTargetId)?.title : recommendation.startsWith('/scenario/') ? scenarios.find((scenario) => scenario.id === recTargetId)?.title : 'Review any module or scenario'}</h2><button className="text-button" onClick={() => go(recommendation)}>Continue learning <span>→</span></button></section>  <AssessmentSummary progress={progress} /><Disclaimer /><button className="reset-button" onClick={() => { if (window.confirm('Reset all locally stored learning progress? This cannot be undone.')) { clearProgress(); setResetMessage('All locally stored learning progress has been reset.') } }}>Reset local progress</button>{resetMessage && <p className="reset-confirmation" role="status" aria-live="polite">{resetMessage}</p>}</div>
+  const handleExport = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(progress));
+    const dlAnchorElem = document.createElement('a');
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", "exlearn-progress.json");
+    dlAnchorElem.click();
+  }
+  const handleImport = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json,application/json';
+    fileInput.onchange = e => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = readerEvent => {
+        const content = readerEvent.target?.result as string;
+        if (loadImportedProgress(content)) {
+          setResetMessage('Progress successfully imported.');
+        } else {
+          setResetMessage('Failed to import progress. Invalid file format.');
+        }
+      }
+      reader.readAsText(file);
+    }
+    fileInput.click();
+  }
+  return <div className="container"><PageHeader eyebrow="YOUR DASHBOARD" title="Progress that stays yours." intro="A lightweight local dashboard for this browser. No login, account, or server storage." /><div className="progress-overview"><div><strong>{Math.round((done / total) * 100)}%</strong><span>overall activity complete</span></div><div><strong>{curriculum.completedLessons}</strong><span>lessons complete</span></div><div><strong>{curriculum.inProgressLessons}</strong><span>lessons in progress</span></div><div><strong>{curriculum.notStartedLessons}</strong><span>lessons not started</span></div></div><div className="progress-bar" role="progressbar" aria-valuenow={curriculum.completionPercent} aria-valuemin={0} aria-valuemax={100} aria-label="Curriculum lesson progress"><i style={{ width: `${curriculum.completionPercent}%` }} /></div><div className="level-progress">{(['Beginner', 'Intermediate', 'Advanced'] as Level[]).map((level) => <div key={level}><div className="card-top"><strong>{level}</strong><span>{curriculum.byLevel[level].percent}%</span></div><div className="progress-bar"><i style={{ width: `${curriculum.byLevel[level].percent}%` }} /></div><small>{curriculum.byLevel[level].completed} completed · {curriculum.byLevel[level].inProgress} in progress · {curriculum.byLevel[level].notStarted} not started</small></div>)}</div><section className="module-summary"><p className="eyebrow">MODULE PROGRESS</p>{Object.entries(curriculum.byModule).map(([module, summary]) => <div className="module-summary-row" key={module}><span>Module {module}</span><span>{summary.completed}/{summary.total} complete</span><div className="progress-bar"><i style={{ width: `${summary.percent}%` }} /></div></div>)}</section><section className="performance-grid"><div><p className="eyebrow">QUIZ PERFORMANCE</p><strong>{progress.attemptedQuizzes.length}</strong><span>attempted · {progress.completedQuizzes.length} passed</span></div><div><p className="eyebrow">SCENARIO PERFORMANCE</p><strong>{progress.attemptedScenarios.length}</strong><span>attempted · {progress.completedScenarios.length} completed</span></div></section><section className="next-step"><p className="eyebrow">CONTINUE LEARNING</p><h2>{recommendation.startsWith('/lesson/') ? lessons.find((lesson) => lesson.id === recTargetId)?.title : recommendation.startsWith('/quiz/') ? quizzes.find((quiz) => quiz.id === recTargetId)?.title : recommendation.startsWith('/scenario/') ? scenarios.find((scenario) => scenario.id === recTargetId)?.title : 'Review any module or scenario'}</h2><button className="text-button" onClick={() => go(recommendation)}>Continue learning <span>→</span></button></section>  <AssessmentSummary progress={progress} /><Disclaimer /><div className="progress-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '2rem' }}><button className="button button-ghost" onClick={handleExport}>Export progress (JSON)</button><button className="button button-ghost" onClick={handleImport}>Import progress</button><button className="reset-button" onClick={() => { if (window.confirm('Reset all locally stored learning progress? This cannot be undone.')) { clearProgress(); setResetMessage('All locally stored learning progress has been reset.') } }}>Reset local progress</button></div>{resetMessage && <p className="reset-confirmation" role="status" aria-live="polite">{resetMessage}</p>}</div>
 }
 
 function AssessmentSummary({ progress }: { progress: ReturnType<typeof useProgress>['progress'] }) {

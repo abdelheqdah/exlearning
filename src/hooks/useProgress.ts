@@ -39,5 +39,16 @@ export function useProgress() {
     setProgress(fresh)
   }
 
-  return { progress, startLesson, completeLesson, saveQuizScore, recordScenario, clearProgress }
+  const loadImportedProgress = (rawJson: string): boolean => {
+    try {
+      const parsed = JSON.parse(rawJson)
+      const fresh = normaliseProgress(parsed)
+      setProgress(fresh)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  return { progress, startLesson, completeLesson, saveQuizScore, recordScenario, clearProgress, loadImportedProgress }
 }
