@@ -294,7 +294,7 @@ describe('progress UI', () => {
   it('displays visible and screen-reader accessible tags alongside colors for assessment feedback', () => {
     window.history.pushState({}, '', '/scenario/unclear-area-drawing')
     render(<App />)
-    const option = screen.getByRole('button', { name: /control the change/i })
+    const option = screen.getByRole('button', { name: /pause affected installation work/i })
     fireEvent.click(option)
     expect(screen.getByText(/✓ recommended/i)).toBeTruthy()
   })
@@ -350,7 +350,7 @@ describe('dynamic route state isolation', () => {
     expect(screen.getByText(/awaiting your decision/i)).toBeTruthy()
 
     // Make a choice in the first scenario
-    const option = screen.getByRole('button', { name: /control the change/i })
+    const option = screen.getByRole('button', { name: /pause affected installation work/i })
     fireEvent.click(option)
 
     expect(screen.getByText(/decision reviewed/i)).toBeTruthy()
@@ -360,7 +360,7 @@ describe('dynamic route state isolation', () => {
     window.history.pushState({}, '', '/scenario/gas-release-ignition-source')
     window.dispatchEvent(new PopStateEvent('popstate'))
 
-    await waitFor(() => expect(screen.getByRole('heading', { name: /gas release near an ignition source/i })).toBeTruthy())
+    await waitFor(() => expect(screen.getByRole('heading', { name: /confirmed gas detection near energized equipment/i })).toBeTruthy())
     expect(screen.getByText(/awaiting your decision/i)).toBeTruthy()
     expect(screen.queryByRole('button', { name: /retry scenario/i })).toBeNull()
   })
