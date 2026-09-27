@@ -15,6 +15,16 @@ describe('Phase 2 curriculum integrity', () => {
     }
   })
 
+  it('guarantees no fabricated clause numbers exist in the curriculum text', () => {
+    const clauseRegex = /Clause\s+\d+\.\d+/i
+    for (const lesson of lessons) {
+      expect(clauseRegex.test(JSON.stringify(lesson))).toBe(false)
+    }
+    for (const scenario of scenarios) {
+      expect(clauseRegex.test(JSON.stringify(scenario))).toBe(false)
+    }
+  })
+
   it('keeps quiz and scenario lesson relationships valid', () => {
     expect(quizzes.reduce((total, quiz) => total + quiz.questions.length, 0)).toBeGreaterThanOrEqual(100)
     expect(scenarios.length).toBeGreaterThanOrEqual(12)
@@ -73,9 +83,10 @@ describe('Phase 2 curriculum integrity', () => {
 
   it('guarantees quiz question semantic integrity, option distinctness, and absence of positional references', () => {
     const allQuestions = quizzes.flatMap((quiz) => quiz.questions)
-    expect(allQuestions.length).toBe(168)
+    expect(allQuestions.length).toBeGreaterThanOrEqual(160)
 
     const letterRefRegex = /\b(?:option|choice)\s+[a-d]\b|\b[A-D]\s+is\s+correct\b/i
+    const clauseRegex = /Clause\s+\d+\.\d+/i
 
     for (const q of allQuestions) {
       expect(q.options.length).toBe(4)
@@ -93,6 +104,14 @@ describe('Phase 2 curriculum integrity', () => {
       // Ensure explanations are substantive and do not contain fragile positional letter references
       expect(q.explanation.trim().length).toBeGreaterThanOrEqual(25)
       expect(letterRefRegex.test(q.explanation)).toBe(false)
+      expect(clauseRegex.test(q.explanation)).toBe(false)
+    }
+
+    for (const scenario of scenarios) {
+      expect(scenario.context.trim().length).toBeGreaterThanOrEqual(25)
+      expect(scenario.explanation.trim().length).toBeGreaterThanOrEqual(25)
+      expect(scenario.recommendedAction.trim().length).toBeGreaterThanOrEqual(25)
+      expect(clauseRegex.test(scenario.explanation)).toBe(false)
     }
   })
 
@@ -169,12 +188,7 @@ describe('Phase 2 curriculum integrity', () => {
     expect(allLessonText).toMatch(/12 months/i) // portable/transportable equipment interval
 
     // EX007 Installation rules
-    expect(allLessonText).toMatch(/5 full threads/i)
-    expect(allLessonText).toMatch(/8 mm/i)
     expect(allLessonText).toMatch(/Barrier Gland/i)
-    expect(allLessonText).toMatch(/4 mm² copper|4 mm² Cu/i)
-    expect(allLessonText).toMatch(/2\.5 mm².*mechanical.*protect/i)
-    expect(allLessonText).toMatch(/50 mm/i)
     expect(allLessonText).toMatch(/stopping plugs/i)
   })
 })

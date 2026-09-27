@@ -1,6 +1,6 @@
 // Final targeted quiz + submit + feedback + scoring validation
 const { chromium } = require('playwright');
-const BASE = 'http://localhost:5174';
+const BASE = 'http://localhost:5173';
 const results = [];
 
 function log(test, status, detail = '') {
