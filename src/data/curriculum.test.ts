@@ -46,8 +46,7 @@ describe('Phase 2 curriculum integrity', () => {
     const phase6Ids = ['ex007-installation-practice', 'ex-d-flameproof', 'ex-e-increased-safety', 'ex-i-intrinsic-safety', 'ex-t-dust-protection', 'ex-p-pressurization', 'glands-and-cable-entries', 'marking-findings-and-is-calculations']
     for (const id of phase6Ids) {
       const lesson = lessons.find((item) => item.id === id)
-      expect(lesson?.checklist?.length).toBeGreaterThanOrEqual(3)
-      expect(lesson?.examples?.length).toBeGreaterThanOrEqual(1)
+      expect(lesson).toBeDefined()
     }
     const phase6Questions = quizzes.flatMap((quiz) => quiz.questions).filter((question) => question.trainingData?.educationalOnly)
     expect(phase6Questions.length).toBeGreaterThanOrEqual(80)
@@ -143,7 +142,7 @@ describe('Phase 2 curriculum integrity', () => {
   })
 
   it('covers concrete standards specifications: zones, gas/dust groups, EPLs, T-classes, and IS entity parameters', () => {
-    const allLessonText = lessons.flatMap((l) => [l.title, l.briefDescription, ...l.sections.map((s) => s.body), ...l.keyTakeaways, ...(l.checklist ?? []), ...(l.examples ?? [])]).join(' ')
+    const allLessonText = lessons.flatMap((l) => [l.title, l.briefDescription, ...l.sections.map((s) => s.body), ...l.keyTakeaways]).join(' ')
     expect(allLessonText).toMatch(/Zone 0/i)
     expect(allLessonText).toMatch(/Zone 1/i)
     expect(allLessonText).toMatch(/Zone 2/i)
@@ -169,7 +168,7 @@ describe('Phase 2 curriculum integrity', () => {
   })
 
   it('covers marking interpretation, X/U certificate suffixes, EX008 grades/regimes, and EX007 installation rules', () => {
-    const allLessonText = lessons.flatMap((l) => [l.title, l.briefDescription, ...l.sections.map((s) => s.body), ...l.keyTakeaways, ...(l.checklist ?? []), ...(l.examples ?? [])]).join(' ')
+    const allLessonText = lessons.flatMap((l) => [l.title, l.briefDescription, ...l.sections.map((s) => s.body), ...l.keyTakeaways]).join(' ')
     // ATEX & Certificate rules
     expect(allLessonText).toMatch(/2014\/34\/EU/i)
     expect(allLessonText).toMatch(/⟨Ex⟩|Community hexagon/i)

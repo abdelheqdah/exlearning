@@ -8,11 +8,8 @@ export type Lesson = {
   category: string
   briefDescription: string
   estimatedMinutes: number
-  objectives: string[]
   prerequisites: string[]
   sections: { heading: string; body: string }[]
-  checklist?: string[]
-  examples?: string[]
   keyTakeaways: string[]
   relatedTopics: string[]
 }

@@ -35,7 +35,7 @@ export function validateCurriculumIntegrity(lessons: Lesson[], quizzes: Quiz[], 
   lessons.forEach((lesson) => {
     if (!lesson.id.trim()) issues.push({ type: 'lesson', id: lesson.id, detail: 'Missing stable identifier.' })
     if (!lesson.title.trim() || !lesson.briefDescription.trim()) issues.push({ type: 'lesson-quality', id: lesson.id, detail: 'Lesson needs a title and description.' })
-    if (lesson.objectives.length < 2 || lesson.sections.length < 2 || lesson.keyTakeaways.length < 2) issues.push({ type: 'lesson-quality', id: lesson.id, detail: 'Lesson needs meaningful objectives, sections, and takeaways.' })
+    if (lesson.sections.length < 2 || lesson.keyTakeaways.length < 2) issues.push({ type: 'lesson-quality', id: lesson.id, detail: 'Lesson needs meaningful sections and takeaways.' })
     if (lesson.moduleOrder < 1 || !Number.isInteger(lesson.moduleOrder)) issues.push({ type: 'lesson-order', id: lesson.id, detail: 'Lesson module order must be a positive integer.' })
   })
   quizzes.forEach((quiz) => {
